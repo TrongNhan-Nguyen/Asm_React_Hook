@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "403369308124",
+    "firebase_url": "https://asm-react-hook.firebaseio.com",
+    "project_id": "asm-react-hook",
+    "storage_bucket": "asm-react-hook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403369308124:android:4c5edad748dec36ce5e919",
+        "android_client_info": {
+          "package_name": "com.asmhook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403369308124-94tj73sv9155unsguk0e2s1amq4l27ht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBehv5A0yZ8ut0h5cU0uWKwVRHTX7r04Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403369308124-94tj73sv9155unsguk0e2s1amq4l27ht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

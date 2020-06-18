@@ -1,62 +1,53 @@
 /* eslint-disable prettier/prettier */
-import {StyleSheet, Dimensions} from 'react-native';
-const width = Dimensions.get('screen').width;
+import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    paddingHorizontal: 5,
+    paddingBottom: 10,
   },
-  title: {
-    fontSize: 25,
-    marginTop: 10,
+  close: {
+    position: 'absolute',
+    right: 10,
+    top: 5,
+  },
+  text_close: {
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'tomato',
   },
-  image: {
-    width: width - 10,
-    height: 150,
-    backgroundColor: 'lightgrey',
-    marginTop: 10,
-    borderRadius: 5,
-  },
-  container_picker: {
-    width: width,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 15,
-  },
-  picker: {
-    height: 50,
-    width: 150,
-    padding: 0,
-  },
-  text_picker: {
-    fontSize: 15,
+  title: {
+    marginTop: 20,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: 'tomato',
+  },
+  view_top: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  view_middle: {
+    flex: 8,
+  },
+  view_bottom: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   input: {
-    width: width - 10,
-    backgroundColor: 'lightgrey',
-    paddingHorizontal: 10,
-    marginTop: 10,
+    flex: 8,
+    borderWidth: 1,
     borderRadius: 5,
+    borderColor: 'tomato',
+    margin: 3,
   },
-  view_button: {
-    width: width,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    marginTop: 10,
-  },
-  button: {
-    width: 100,
-    paddingVertical: 10,
-    alignItems: 'center',
+  post: {
+    flex: 2,
     justifyContent: 'center',
-    backgroundColor: 'tomato',
-    borderRadius: 20,
-  },
-  indicator: {
-    marginTop: 20,
+    alignItems: 'center',
   },
 });
 export default styles;

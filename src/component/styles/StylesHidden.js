@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 15,
     borderWidth: 1,
-    borderColor: 'mediumseagreen',
+    margin: 5,
+    borderColor: 'tomato',
   },
   buton: {
     alignItems: 'center',

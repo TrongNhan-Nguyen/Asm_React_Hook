@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import Main from './src/component/screens/Main';
 import {Provider} from 'react-redux';
 import Store from './src/redux/Strore';
-import {PermissionsAndroid} from 'react-native';
+import {PermissionsAndroid, View} from 'react-native';
+import Main from './src/Main';
+// import Main from './src/Main';
 
 const App = () => {
   // requestPermissions();
@@ -11,6 +12,7 @@ const App = () => {
     <Provider store={Store}>
       <Main />
     </Provider>
+    
   );
 };
 const requestPermissions = async () => {

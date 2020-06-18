@@ -1,7 +1,10 @@
 /* eslint-disable prettier/prettier */
-export const showIndi = () => {
+export const showModal = () => {
   return {type: 'SHOW_MODAL'};
 };
-export const hideIndi = () => {
+export const hideModal = () => {
   return {type: 'HIDE_MODAL'};
+};
+export const getKeyPost = (keyPost) => {
+  return {type: 'GET_KEY_POST', payload: keyPost};
 };

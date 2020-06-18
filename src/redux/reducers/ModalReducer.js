@@ -1,13 +1,20 @@
 /* eslint-disable prettier/prettier */
 const initialState = {
   isShow: false,
+  keyPost: '',
 };
 const ModalReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SHOW_MODAL':
-      return {isShow: true};
+      return {...state, isShow: true};
     case 'HIDE_MODAL':
-      return {isShow: false};
+      return {...state, isShow: false};
+    case 'GET_KEY_POST':
+      const newKey = action.payload;
+      return {
+        ...state,
+        keyPost: newKey,
+      };
     default:
       return state;
   }

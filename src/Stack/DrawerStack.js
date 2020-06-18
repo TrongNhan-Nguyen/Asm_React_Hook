@@ -5,9 +5,9 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {TouchableOpacity} from 'react-native';
 import {DrawerActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import DrawerContent from '../component/drawer/DrawerContent';
+import ListPost from '../component/drawer/ListPost';
 
-import DrawerContent from './DrawerContent';
-import ListPost from './ListPost';
 const Drawer = createDrawerNavigator();
 const DrawerStack = () => {
   return (

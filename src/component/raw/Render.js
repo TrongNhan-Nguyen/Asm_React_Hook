@@ -7,6 +7,7 @@ import styles from '../styles/StylesRender';
 import {useDispatch} from 'react-redux';
 import {getPost} from '../../redux/actions/PostAction';
 import {AccessToken, ShareDialog, LoginManager} from 'react-native-fbsdk';
+import {showModal, getKeyPost} from '../../redux/actions/Modal';
 const Render = (props) => {
   const dispatch = useDispatch();
   const item = props.item;
@@ -42,18 +43,26 @@ const Render = (props) => {
       }
     });
   };
+  const comment = () => {
+    dispatch(showModal());
+    dispatch(getKeyPost(item.key));
+  };
   return (
     <View style={styles.container}>
       <View>
         <Image style={styles.image} source={{uri: item.url}} />
         <View style={styles.bar}>
           <Text style={styles.pubDate}>{item.pubDate}</Text>
-          <Icon
+          <TouchableOpacity
+            onPress={comment}
+            style={{position: 'absolute', right: 60}}>
+            <Icon name="comment" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => share(item.url)}
-            name="share-variant"
-            size={25}
-            style={{position: 'absolute', right: 10}}
-          />
+            style={{position: 'absolute', right: 10}}>
+            <Icon name="share-variant" size={25} color="white" />
+          </TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity onPress={details} activeOpacity={0.7}>

@@ -3,7 +3,7 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import DrawerStack from '../drawer/DrawerStack';
+import DrawerStack from '../../Stack/DrawerStack';
 const Home = ({navigation}) => {
   const admin = useSelector((state) => state.user.isAdmin);
   const addPost = () => {

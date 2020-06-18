@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import styles from '../styles/StylesModal';
+import styles from '../styles/StylesAddPost';
 import {Picker} from '@react-native-community/picker';
 import ImagePicker from 'react-native-image-picker';
 import {addPost} from '../database/Post';
@@ -22,7 +22,7 @@ const options = {
   },
 };
 
-const ModalAdd = ({navigation}) => {
+const AddPost = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [descriptions, setDescriptions] = useState('');
   const [category, setCategory] = useState('Science');
@@ -124,4 +124,4 @@ function toast(msg) {
   ToastAndroid.show(msg, ToastAndroid.SHORT);
 }
 
-export default ModalAdd;
+export default AddPost;

@@ -36,13 +36,13 @@ const Hidden = (props) => {
           onclose(rowMap, rowKey);
           deleted();
         }}>
-        <Icon name="delete-forever-outline" size={48} color="mediumseagreen" />
+        <Icon name="delete-forever-outline" size={48} color="tomato" />
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.buton, styles.close]}
         activeOpacity={0.7}
         onPress={() => onclose(rowMap, rowKey)}>
-        <Icon name="logout" size={40} color="mediumseagreen" />
+        <Icon name="logout" size={40} color="tomato" />
       </TouchableOpacity>
     </View>
   );

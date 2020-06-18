@@ -16,10 +16,8 @@ import {GoogleSignin} from '@react-native-community/google-signin';
 var PushNotification = require('react-native-push-notification');
 PushNotification.configure({
   onRegister: function (token) {
-    console.log('TOKEN:', token);
   },
   onNotification: function (notification) {
-    console.log('NOTIFICATION:', notification);
     notification.finish(PushNotificationIOS.FetchResult.NoData);
   },
   permissions: {
@@ -33,12 +31,10 @@ PushNotification.configure({
 const DrawerContent = ({navigation}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  console.log(user.displayName);
   const isNotify = useSelector((state) => state.post.isNotify);
   const toggle = () => {
     const acitonToggle = toggleNotify();
     dispatch(acitonToggle);
-    console.log(isNotify);
   };
   const changeList = (category) => {
     const actionChangeCategoty = changeCategory(category);
@@ -48,7 +44,6 @@ const DrawerContent = ({navigation}) => {
   const _signOut = async () => {
     try {
       const isSignedIn = await GoogleSignin.isSignedIn();
-      console.log(isSignedIn);
       if (isSignedIn) {
         await GoogleSignin.revokeAccess();
         await GoogleSignin.signOut();
@@ -83,9 +78,18 @@ const DrawerContent = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <View style={styles.header}>
-        <Image style={styles.image} source={{uri: user.photoURL}} />
-        <Text style={styles.text}>{user.displayName}</Text>
-        <Text style={styles.text}>{user.email}</Text>
+        <Image
+          style={styles.image}
+          // source={{uri: user.photoURL}}
+        />
+        <Text style={styles.text}>
+          Name
+          {/* {user.displayName} */}
+        </Text>
+        <Text style={styles.text}>
+          Email
+          {/* {user.email} */}
+        </Text>
       </View>
       <DrawerItem
         label="Science"

@@ -3,10 +3,10 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Home from './Home';
-import {option} from '../drawer/DrawerStack';
-import ModalAdd from './ModalAdd';
-import DetailPost from '../drawer/DetailPost';
+import Home from '../component/screens/Home';
+import DetailPost from '../component/drawer/DetailPost';
+import AddPost from '../component/screens/AddPost';
+import { option } from './DrawerStack';
 
 const Stack = createStackNavigator();
 
@@ -16,7 +16,7 @@ const AppStack = () => {
       <Stack.Screen name="Home" component={Home} options={option} />
       <Stack.Screen
         name="Add post"
-        component={ModalAdd}
+        component={AddPost}
         options={{headerShown: false}}
       />
       <Stack.Screen

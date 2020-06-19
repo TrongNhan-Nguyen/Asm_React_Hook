@@ -4,15 +4,12 @@ import {Provider} from 'react-redux';
 import Store from './src/redux/Strore';
 import {PermissionsAndroid, View} from 'react-native';
 import Main from './src/Main';
-// import Main from './src/Main';
-
 const App = () => {
   // requestPermissions();
   return (
     <Provider store={Store}>
       <Main />
     </Provider>
-    
   );
 };
 const requestPermissions = async () => {

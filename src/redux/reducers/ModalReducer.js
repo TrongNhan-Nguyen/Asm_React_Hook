@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 const initialState = {
   isShow: false,
-  keyPost: '',
+  keyPost: null,
 };
 const ModalReducer = (state = initialState, action) => {
   switch (action.type) {

@@ -34,19 +34,24 @@ GoogleSignin.configure({
 const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('nhan@gmail.com');
   const [pass, setPass] = useState('123456');
-  const isLoading = useSelector((state) => state.user.isLoading);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const fireBase = () => {
-    const actionStart = startSignIn();
-    dispatch(actionStart);
+    setIsLoading(true);
     auth()
       .signInWithEmailAndPassword(email, pass)
       .then(() => {
         var newUser = auth().currentUser;
+        newUser.type = 'Firebase';
+        newUser.pass = pass;
         const actionSignIn = signIn(newUser);
         dispatch(actionSignIn);
+        setIsLoading(false);
       })
-      .catch((err) => toast(err + ''));
+      .catch((err) => {
+        setIsLoading(false);
+        toast(err + '');
+      });
   };
   const sign_up = () => {
     navigation.navigate('SignUp');
@@ -55,7 +60,7 @@ const SignIn = ({navigation}) => {
     LoginManager.logInWithPermissions(['public_profile', 'email']).then(
       function (result) {
         if (result.isCancelled) {
-          console.log('Login cancelled');
+          toast('Login cancelled');
         } else {
           const infoRequest = new GraphRequest(
             '/me?fields=name,email,picture.type(large)',
@@ -66,19 +71,20 @@ const SignIn = ({navigation}) => {
         }
       },
       function (error) {
-        console.log('Login fail with error: ' + error);
+        toast(error + '');
       },
     );
   };
 
   const getInforFB = (error, result) => {
     if (error) {
-      console.log('Error fetching data: ' + error.toString());
+      toast(error);
     } else {
       var newUser = {
         displayName: result.name,
         email: result.email,
         photoURL: result.picture.data.url,
+        type: 'Facebook',
       };
       const actionSignIn = signIn(newUser);
       dispatch(actionSignIn);
@@ -93,11 +99,12 @@ const SignIn = ({navigation}) => {
         displayName: userInfo.user.givenName + ' ' + userInfo.user.familyName,
         email: userInfo.user.email,
         photoURL: userInfo.user.photo,
+        type: 'Google',
       };
       const actionSignIn = signIn(newUser);
       dispatch(actionSignIn);
     } catch (error) {
-      console.log(error);
+      toast(error);
     }
   };
   function toast(msg) {
@@ -130,6 +137,7 @@ const SignIn = ({navigation}) => {
       <TextInput
         onChangeText={(Pass) => setPass(Pass)}
         value={pass}
+        secureTextEntry={true}
         style={styles.input}
         placeholder="Enter your password"
       />

@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DrawerStack from '../../Stack/DrawerStack';
 const Home = ({navigation}) => {
+  const currentDrawer = useSelector((state) => state.drawer.name);
   const admin = useSelector((state) => state.user.isAdmin);
   const addPost = () => {
     navigation.navigate('Add post');
@@ -12,7 +13,7 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.cotainer}>
       <DrawerStack />
-      {admin ? (
+      {admin && currentDrawer === 'List Post' ? (
         <TouchableOpacity onPress={addPost} style={styles.fab}>
           <Icon name="plus" size={30} />
         </TouchableOpacity>

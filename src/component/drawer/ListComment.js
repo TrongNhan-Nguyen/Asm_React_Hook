@@ -6,16 +6,17 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import {useSelector, useDispatch} from 'react-redux';
 import {hideModal} from '../../redux/actions/Modal';
-import {authen, dbComment} from '../database/Firebase';
+import {dbComment} from '../database/Firebase';
 import {addComment} from '../database/DbComment';
-import RawComment from '../raw/RawComment';
 import styles from '../styles/StylesModal';
-const user = authen.currentUser;
-const Comment = () => {
+import CommenRender from '../raw/CommenRender';
+const ListComment = () => {
   const [comment, setComment] = useState('');
   const [list, setList] = useState([]);
   const isShow = useSelector((state) => state.modal.isShow);
   const keyPost = useSelector((state) => state.modal.keyPost);
+  const user = useSelector((state) => state.user.user);
+  const userType = user.type;
   const dispatch = useDispatch();
 
   const close = () => {
@@ -38,21 +39,32 @@ const Comment = () => {
     }
   };
   const getData = () => {
-    dbComment.child(keyPost).on('value', (snap) => {
-      var items = [];
-      snap.forEach((child) => {
-        items.push(child.val());
+    if (keyPost !== null) {
+      dbComment.child(keyPost).on('value', (snap) => {
+        var items = [];
+        snap.forEach((child) => {
+          items.push(child.val());
+        });
+        items.sort((a, b) => {
+          return b.timeStamp - a.timeStamp;
+        });
+        setList(items);
       });
-      setList(items);
-    });
+    } else {
+      dbComment.off('value');
+      console.log('keyPost: ' + keyPost);
+      setList([]);
+    }
   };
-
+  useEffect(() => {
+    getData();
+  }, [keyPost]);
   return (
     <View>
       <Modal
         style={styles.container}
-        // isVisible={false}
-        isVisible={isShow}>
+        isVisible={isShow}
+      >
         <View style={styles.view_top}>
           <TouchableOpacity
             style={styles.close}
@@ -64,25 +76,29 @@ const Comment = () => {
         </View>
         <View style={styles.view_middle}>
           <FlatList
+            initialNumToRender={1}
             data={list}
-            renderItem={({item}) => <RawComment item={item} />}
+            renderItem={({item}) => <CommenRender item={item} />}
+            keyExtractor={(item, index) => index.toString()}
           />
         </View>
-        <View style={styles.view_bottom}>
-          <TextInput
-            onChangeText={(cmt) => setComment(cmt)}
-            value={comment}
-            multiline={true}
-            placeholder="Enter your comment"
-            style={styles.input}
-          />
-          <TouchableOpacity onPress={post} style={styles.post}>
-            <Icon name="send-circle-outline" color="tomato" size={35} />
-          </TouchableOpacity>
-        </View>
+        {userType === 'Firebase' ? (
+          <View style={styles.view_bottom}>
+            <TextInput
+              onChangeText={(cmt) => setComment(cmt)}
+              value={comment}
+              multiline={true}
+              placeholder="Enter your comment"
+              style={styles.input}
+            />
+            <TouchableOpacity onPress={post} style={styles.post}>
+              <Icon name="send-circle-outline" color="tomato" size={35} />
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </Modal>
     </View>
   );
 };
 
-export default Comment;
+export default ListComment;

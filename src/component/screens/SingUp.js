@@ -12,7 +12,7 @@ import {
 import styles from '../styles/StylesSignUp';
 import auth from '@react-native-firebase/auth';
 import ImagePicker from 'react-native-image-picker';
-import { storageUser } from '../database/Firebase';
+import {storageUser} from '../database/Firebase';
 const options = {
   title: 'Select Picture',
   storageOptions: {
@@ -68,10 +68,16 @@ const SingUp = ({navigation}) => {
       });
   };
   const submit = () => {
-    auth()
-      .createUserWithEmailAndPassword(email, pass)
-      .then(() => updateProfile())
-      .catch((err) => console.log(err));
+    if (email === '' || pass === '' || name === '') {
+      toast('Email, Name or Password cannot be empty');
+    } else if (path === null) {
+      toast('Please, choose your avatar');
+    } else {
+      auth()
+        .createUserWithEmailAndPassword(email, pass)
+        .then(() => updateProfile())
+        .catch((err) => console.log(err));
+    }
   };
   const signIn = () => {
     navigate('SignIn');

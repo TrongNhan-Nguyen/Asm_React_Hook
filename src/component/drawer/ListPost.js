@@ -3,12 +3,12 @@
 /* eslint-disable prettier/prettier */
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-import Render from '../raw/Render';
 import {SwipeListView} from 'react-native-swipe-list-view';
-import Hidden from '../raw/Hidden';
 import {dbPost} from '../database/Firebase';
 import {useSelector} from 'react-redux';
-import Comment from './Comment';
+import PostHidden from '../raw/PostHidden';
+import PostRender from '../raw/PostRender';
+import ListComment from './ListComment';
 const ListPost = ({navigation}) => {
   const [list, setList] = useState([]);
   const admin = useSelector((state) => state.user.isAdmin);
@@ -33,15 +33,15 @@ const ListPost = ({navigation}) => {
       <Text style={styles.title}>{category} News</Text>
       <SwipeListView
         data={list}
-        renderItem={({item}) => <Render item={item} navigation={navigation} />}
+        renderItem={({item}) => <PostRender item={item} navigation={navigation} />}
         renderHiddenItem={(data, rowMap) => (
-          <Hidden data={data} rowMap={rowMap} />
+          <PostHidden data={data} rowMap={rowMap} />
         )}
         rightOpenValue={-140}
-        // disableLeftSwipe={admin ? false : true}
+        disableLeftSwipe={admin ? false : true}
         disableRightSwipe={true}
       />
-      <Comment />
+      <ListComment />
     </View>
   );
 };

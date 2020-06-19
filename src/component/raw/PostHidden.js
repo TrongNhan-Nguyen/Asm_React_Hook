@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../styles/StylesHidden';
 import {deletePost} from '../database/Post';
 
-const Hidden = (props) => {
+const PostHidden = (props) => {
   const {rowMap} = props;
   const {item} = props.data;
   const rowKey = props.data.item.key;
@@ -48,4 +48,4 @@ const Hidden = (props) => {
   );
 };
 
-export default Hidden;
+export default PostHidden;

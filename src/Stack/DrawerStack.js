@@ -3,16 +3,20 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {TouchableOpacity} from 'react-native';
-import {DrawerActions} from '@react-navigation/native';
+import {DrawerActions, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import DrawerContent from '../component/drawer/DrawerContent';
 import ListPost from '../component/drawer/ListPost';
+import AccountInfo from '../component/drawer/AccountInfo';
 
 const Drawer = createDrawerNavigator();
 const DrawerStack = () => {
   return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+    <Drawer.Navigator
+      initialRouteName="List Post"
+      drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen name="List Post" component={ListPost} />
+      <Drawer.Screen name="Account" component={AccountInfo} />
     </Drawer.Navigator>
   );
 };

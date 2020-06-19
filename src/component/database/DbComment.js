@@ -13,6 +13,26 @@ export const addComment = (comment) => {
     .then(() => console.log('comment added'))
     .catch((err) => console.log(err));
 };
+
+export const editComment = (comment) => {
+  comment.pubDate = currentDay();
+  comment.timeStamp = Date.now();
+  dbComment
+    .child(comment.keyPost)
+    .child(comment.key)
+    .set(comment)
+    .then(() => console.log('comment edited'))
+    .catch((err) => console.log(err));
+};
+export const deleteComment = (comment) => {
+  dbComment
+    .child(comment.keyPost)
+    .child(comment.key)
+    .remove()
+    .then(() => console.log('comment deleted'))
+    .catch((err) => console.log(err));
+};
+
 function currentDay() {
   var date = new Date();
   var day = date.getDate();

@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, {useEffect} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, ToastAndroid} from 'react-native';
 import {DrawerItem} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Drawer, TouchableRipple, Switch} from 'react-native-paper';
@@ -13,10 +13,10 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {dbPost, authen} from '../database/Firebase';
 import {LoginManager} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
+import {getNameDrawer} from '../../redux/actions/Drawer';
 var PushNotification = require('react-native-push-notification');
 PushNotification.configure({
-  onRegister: function (token) {
-  },
+  onRegister: function (token) {},
   onNotification: function (notification) {
     notification.finish(PushNotificationIOS.FetchResult.NoData);
   },
@@ -39,7 +39,9 @@ const DrawerContent = ({navigation}) => {
   const changeList = (category) => {
     const actionChangeCategoty = changeCategory(category);
     dispatch(actionChangeCategoty);
+    dispatch(getNameDrawer('List Post'));
     navigation.closeDrawer();
+    navigation.navigate('List Post');
   };
   const _signOut = async () => {
     try {
@@ -59,7 +61,15 @@ const DrawerContent = ({navigation}) => {
       console.error(error);
     }
   };
-
+  const account = () => {
+    const type = user.type;
+    if (type === 'Firebase') {
+      navigation.navigate('Account');
+      dispatch(getNameDrawer('Account'));
+    } else {
+      ToastAndroid.show('Required account Firebase to continue',ToastAndroid.SHORT);
+    }
+  };
   const createNotify = () => {
     PushNotification.localNotification({
       title: 'Notification from Firebase',
@@ -80,15 +90,13 @@ const DrawerContent = ({navigation}) => {
       <View style={styles.header}>
         <Image
           style={styles.image}
-          // source={{uri: user.photoURL}}
+          source={{uri: user.photoURL}}
         />
         <Text style={styles.text}>
-          Name
-          {/* {user.displayName} */}
+          {user.displayName}
         </Text>
         <Text style={styles.text}>
-          Email
-          {/* {user.email} */}
+          {user.email}
         </Text>
       </View>
       <DrawerItem
@@ -113,7 +121,7 @@ const DrawerContent = ({navigation}) => {
         label="Account"
         inactiveTintColor="black"
         icon={() => <Icon name="account-card-details-outline" size={20} />}
-        // onPress={() => navigation.navigate('Account')}
+        onPress={account}
       />
       <DrawerItem
         label="Sign Out"

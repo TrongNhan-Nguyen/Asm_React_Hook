@@ -8,7 +8,7 @@ import {useDispatch} from 'react-redux';
 import {getPost} from '../../redux/actions/PostAction';
 import {AccessToken, ShareDialog, LoginManager} from 'react-native-fbsdk';
 import {showModal, getKeyPost} from '../../redux/actions/Modal';
-const Render = (props) => {
+const PostRender = (props) => {
   const dispatch = useDispatch();
   const item = props.item;
   const details = () => {
@@ -77,4 +77,4 @@ const Render = (props) => {
   );
 };
 
-export default Render;
+export default PostRender;

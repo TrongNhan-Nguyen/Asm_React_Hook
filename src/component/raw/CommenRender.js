@@ -21,32 +21,29 @@ const CommenRender = (props) => {
   const [comment, setComment] = useState('');
   const userUID = user.uid;
   const commentUID = item.uid;
-  const userType = user.type;
   const action = () => {
-    if ( userType === 'Firebase') {
-      if (userUID === commentUID) {
-        Alert.alert(
-          'Select your action',
-          '',
-          [
-            {
-              text: 'EDIT',
-              onPress: () => {
-                setEdit(true);
-              },
+    if (userUID === commentUID) {
+      Alert.alert(
+        'Select your action',
+        '',
+        [
+          {
+            text: 'EDIT',
+            onPress: () => {
+              setEdit(true);
             },
-            {
-              text: 'DELETE',
-              onPress: () => {
-                deleteComment(item);
-              },
+          },
+          {
+            text: 'DELETE',
+            onPress: () => {
+              deleteComment(item);
             },
-          ],
-          {cancelable: true},
-        );
-      } else {
-        ToastAndroid.show('You can not edit this comment', ToastAndroid.SHORT);
-      }
+          },
+        ],
+        {cancelable: true},
+      );
+    } else {
+      ToastAndroid.show('You can not edit this comment', ToastAndroid.SHORT);
     }
   };
   const edit = () => {

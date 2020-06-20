@@ -10,13 +10,13 @@ import {dbComment} from '../database/Firebase';
 import {addComment} from '../database/DbComment';
 import styles from '../styles/StylesModal';
 import CommenRender from '../raw/CommenRender';
+
 const ListComment = () => {
   const [comment, setComment] = useState('');
   const [list, setList] = useState([]);
   const isShow = useSelector((state) => state.modal.isShow);
   const keyPost = useSelector((state) => state.modal.keyPost);
   const user = useSelector((state) => state.user.user);
-  const userType = user.type;
   const dispatch = useDispatch();
 
   const close = () => {
@@ -61,10 +61,7 @@ const ListComment = () => {
   }, [keyPost]);
   return (
     <View>
-      <Modal
-        style={styles.container}
-        isVisible={isShow}
-      >
+      <Modal style={styles.container} isVisible={isShow}>
         <View style={styles.view_top}>
           <TouchableOpacity
             style={styles.close}
@@ -82,20 +79,19 @@ const ListComment = () => {
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
-        {userType === 'Firebase' ? (
-          <View style={styles.view_bottom}>
-            <TextInput
-              onChangeText={(cmt) => setComment(cmt)}
-              value={comment}
-              multiline={true}
-              placeholder="Enter your comment"
-              style={styles.input}
-            />
-            <TouchableOpacity onPress={post} style={styles.post}>
-              <Icon name="send-circle-outline" color="tomato" size={35} />
-            </TouchableOpacity>
-          </View>
-        ) : null}
+
+        <View style={styles.view_bottom}>
+          <TextInput
+            onChangeText={(cmt) => setComment(cmt)}
+            value={comment}
+            multiline={true}
+            placeholder="Enter your comment"
+            style={styles.input}
+          />
+          <TouchableOpacity onPress={post} style={styles.post}>
+            <Icon name="send-circle-outline" color="tomato" size={35} />
+          </TouchableOpacity>
+        </View>
       </Modal>
     </View>
   );

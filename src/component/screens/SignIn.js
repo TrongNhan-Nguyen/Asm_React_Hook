@@ -9,27 +9,19 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import {GoogleSignin} from '@react-native-community/google-signin';
 import styles from '../styles/StylesSignIn';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useDispatch, useSelector} from 'react-redux';
-import {signIn, startSignIn} from '../../redux/actions/User';
+import {useDispatch} from 'react-redux';
+import {signIn} from '../../redux/actions/User';
 import auth from '@react-native-firebase/auth';
-import {
-  LoginManager,
-  GraphRequest,
-  GraphRequestManager,
-} from 'react-native-fbsdk';
+import {LoginManager, AccessToken} from 'react-native-fbsdk';
 GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
   webClientId:
-    '403369308124-94tj73sv9155unsguk0e2s1amq4l27ht.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  hostedDomain: '', // specifies a hosted domain restriction
-  loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
-  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  accountName: '', // [Android] specifies an account name on the device that should be used
-  iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+    '403369308124-94tj73sv9155unsguk0e2s1amq4l27ht.apps.googleusercontent.com',
+  offlineAccess: true,
+  forceCodeForRefreshToken: true,
 });
 const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('nhan@gmail.com');
@@ -40,11 +32,10 @@ const SignIn = ({navigation}) => {
     setIsLoading(true);
     auth()
       .signInWithEmailAndPassword(email, pass)
-      .then(() => {
-        var newUser = auth().currentUser;
-        newUser.type = 'Firebase';
-        newUser.pass = pass;
-        const actionSignIn = signIn(newUser);
+      .then(({user}) => {
+        user.type = 'Firebase';
+        user.pass = pass;
+        const actionSignIn = signIn(user);
         dispatch(actionSignIn);
         setIsLoading(false);
       })
@@ -57,54 +48,74 @@ const SignIn = ({navigation}) => {
     navigation.navigate('SignUp');
   };
   const facebook = () => {
+    setIsLoading(true);
     LoginManager.logInWithPermissions(['public_profile', 'email']).then(
       function (result) {
         if (result.isCancelled) {
           toast('Login cancelled');
+          setIsLoading(false);
         } else {
-          const infoRequest = new GraphRequest(
-            '/me?fields=name,email,picture.type(large)',
-            null,
-            getInforFB,
-          );
-          new GraphRequestManager().addRequest(infoRequest).start();
+          AccessToken.getCurrentAccessToken().then((data) => {
+            const facebookCredential = auth.FacebookAuthProvider.credential(
+              data.accessToken,
+            );
+            return auth()
+              .signInWithCredential(facebookCredential)
+              .then(({user}) => {
+                user.type = 'Facebook';
+                dispatch(signIn(user));
+                setIsLoading(false);
+              });
+            //  lay info fb neu khong su dung signInWithCredential
+            // const infoRequest = new GraphRequest(
+            //   '/me?fields=name,email,picture.type(large)',
+            //   null,
+            //   getInforFB,
+            // );
+            // new GraphRequestManager().addRequest(infoRequest).start();
+          });
         }
       },
       function (error) {
         toast(error + '');
+        setIsLoading(false);
       },
     );
   };
 
-  const getInforFB = (error, result) => {
-    if (error) {
-      toast(error);
-    } else {
-      var newUser = {
-        displayName: result.name,
-        email: result.email,
-        photoURL: result.picture.data.url,
-        type: 'Facebook',
-      };
-      const actionSignIn = signIn(newUser);
-      dispatch(actionSignIn);
-    }
-  };
+  // const getInforFB = (error, result) => {
+  //   if (error) {
+  //     toast(error);
+  //   } else {
+  //     var newUser = {
+  //       displayName: result.name,
+  //       email: result.email,
+  //       photoURL: result.picture.data.url,
+  //       type: 'Facebook',
+  //     };
+  //     const actionSignIn = signIn(newUser);
+  //     dispatch(actionSignIn);
+  //   }
+  // };
 
   const google = async () => {
+    setIsLoading(true);
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      const newUser = {
-        displayName: userInfo.user.givenName + ' ' + userInfo.user.familyName,
-        email: userInfo.user.email,
-        photoURL: userInfo.user.photo,
-        type: 'Google',
-      };
-      const actionSignIn = signIn(newUser);
-      dispatch(actionSignIn);
+      const googleCredential = auth.GoogleAuthProvider.credential(
+        userInfo.idToken,
+      );
+      return auth()
+        .signInWithCredential(googleCredential)
+        .then(({user}) => {
+          user.type = 'Google';
+          dispatch(signIn(user));
+          setIsLoading(false);
+        });
     } catch (error) {
       toast(error);
+      setIsLoading(false);
     }
   };
   function toast(msg) {

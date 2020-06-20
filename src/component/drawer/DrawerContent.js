@@ -62,13 +62,8 @@ const DrawerContent = ({navigation}) => {
     }
   };
   const account = () => {
-    const type = user.type;
-    if (type === 'Firebase') {
-      navigation.navigate('Account');
-      dispatch(getNameDrawer('Account'));
-    } else {
-      ToastAndroid.show('Required account Firebase to continue',ToastAndroid.SHORT);
-    }
+    navigation.navigate('Account');
+    dispatch(getNameDrawer('Account'));
   };
   const createNotify = () => {
     PushNotification.localNotification({
@@ -88,16 +83,9 @@ const DrawerContent = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <View style={styles.header}>
-        <Image
-          style={styles.image}
-          source={{uri: user.photoURL}}
-        />
-        <Text style={styles.text}>
-          {user.displayName}
-        </Text>
-        <Text style={styles.text}>
-          {user.email}
-        </Text>
+        <Image style={styles.image} source={{uri: user.photoURL}} />
+        <Text style={styles.text}>{user.displayName}</Text>
+        <Text style={styles.text}>{user.email}</Text>
       </View>
       <DrawerItem
         label="Science"

@@ -120,20 +120,22 @@ const AccountInfo = () => {
         placeholder="Enter your password"
         style={styles.input}
       />
-      <View style={styles.view_button}>
-        <TouchableOpacity
-          onPress={update}
-          activeOpacity={0.5}
-          style={styles.button}>
-          <Text>UPDATE PROFILE</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={edit}
-          activeOpacity={0.5}
-          style={styles.button}>
-          <Text>EDIT PROFILE</Text>
-        </TouchableOpacity>
-      </View>
+      {user.type === 'Firebase' ? (
+        <View style={styles.view_button}>
+          <TouchableOpacity
+            onPress={update}
+            activeOpacity={0.5}
+            style={styles.button}>
+            <Text>UPDATE PROFILE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={edit}
+            activeOpacity={0.5}
+            style={styles.button}>
+            <Text>EDIT PROFILE</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </View>
   );
 };
